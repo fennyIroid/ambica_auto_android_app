@@ -1,0 +1,65 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# State Management Guide
+
+## UI State Pattern
+
+Each feature should follow the UI State pattern:
+
+1. **UI State Class**
+   Example from [SellerProfileUiState.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/ux/container/sellerProfile/SellerProfileUiState.kt):
+   ```kotlin
+   data class UiState(
+       val isLoading: Boolean = false,
+       val error: String? = null,
+       val data: Data? = null
+   )
+   ```
+
+2. **UI State Use Case**
+   Example from [GetSellerProfileUiStateUseCase.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/ux/container/sellerProfile/GetSellerProfileUiStateUseCase.kt)
+   - Handles business logic
+   - Maps data to UI state
+   - Handles error cases
+
+## ViewModel Guidelines
+
+1. **Base ViewModel**
+   - Extend [BaseViewModel.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/model/base/BaseViewModel.kt)
+   - Handle common functionality
+   - Implement proper error handling
+
+2. **State Management**
+   - Use StateFlow for UI state
+   - Handle configuration changes
+   - Implement proper cleanup
+
+3. **Coroutines**
+   - Use viewModelScope
+   - Handle exceptions properly
+   - Cancel operations when needed
+
+## Best Practices
+
+1. **State Updates**
+   - Keep state immutable
+   - Use copy() for state updates
+   - Avoid unnecessary state updates
+
+2. **Error Handling**
+   - Handle all error cases
+   - Show user-friendly error messages
+   - Implement retry mechanisms
+
+3. **Memory Management**
+   - Clear resources in onCleared()
+   - Avoid memory leaks
+   - Handle process death
+
+4. **Testing**
+   - Test state transitions
+   - Mock dependencies
+   - Test error scenarios

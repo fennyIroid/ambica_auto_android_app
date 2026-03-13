@@ -1,0 +1,53 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Jetpack Compose Components Guide
+
+## Common Components
+
+All reusable Compose components are located in [ui/compose/common/](mdc:app/src/main/java/com/golocal/user/mobile/app/ui/compose/common). When creating new UI components:
+
+1. **Buttons**
+   - Use [AppBorderButtonComponent.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/ui/compose/common/AppBorderButtonComponent.kt) for bordered buttons
+   - Follow existing button patterns for consistency
+
+2. **Theme**
+   - Colors defined in [Color.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/ui/theme/Color.kt)
+   - Typography defined in [Type.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/ui/theme/Type.kt)
+   - Theme configuration in [Theme.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/ui/theme/Theme.kt)
+
+## Screen Structure
+
+Each screen should follow this structure:
+```kotlin
+@Composable
+fun ScreenName(
+    uiState: UiState,
+    onAction: (Action) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    // Screen content
+}
+```
+
+## UI State Pattern
+
+Each screen should have:
+1. A Route file (e.g., `*Route.kt`)
+2. A Screen file (e.g., `*Screen.kt`)
+3. A UiState file (e.g., `*UiState.kt`)
+4. A ViewModel (if needed)
+
+Example implementation in [SignupScreen.kt](app/src/main/java/com/wildflower/mobile/app/ux/startup/auth/signup)
+
+## Best Practices
+
+1. Use composable previews for development
+2. Follow material design guidelines
+3. Implement proper state hoisting
+4. Use remember and derivedStateOf appropriately
+5. Implement proper error handling and loading states
+6. Use proper spacing and padding constants
+7. Follow accessibility guidelines

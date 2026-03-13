@@ -1,0 +1,109 @@
+---
+description: Design system and UI patterns for the Amibica Auto vehicle service center workflow app (Gate Entry to Delivery). Apply for all Compose screens and components.
+globs: app/src/main/java/com/ambica/auto/app/**/*.kt
+---
+
+# Vehicle Service Center UI Design (Amibica Auto)
+
+Use these rules for **all** UI work in the vehicle service center workflow app. The app manages the full lifecycle from **Gate Entry to Delivery**. Prioritize **usability for workshop staff** over decorative visuals.
+
+## Design principles
+
+- **Minimal clutter** – Only show information needed for the current task.
+- **Large touch targets** – Minimum 48dp for buttons and tappable areas (accessibility).
+- **Clear status indicators** – Use colored status chips consistently.
+- **Smooth visual hierarchy** – Section cards with clear headers; consistent spacing (e.g. 12–16dp).
+- **Consistent spacing** – Use 8dp, 12dp, 16dp, 24dp; avoid one-off values.
+- **Material3 design system** – Use MaterialTheme colors and typography; no hardcoded styles where theme tokens exist.
+- **Soft elevation cards** – Default card elevation 2–4dp; rounded corners (12–20dp).
+- **Rounded components** – Buttons, chips, text fields: 12–16dp corner radius.
+- **Clean typography** – Prefer MaterialTheme.typography; ensure readable sizes (body ≥ 14sp).
+- **Light neutral palette** – Backgrounds: near-white/light grey; accent colors only for status and primary actions.
+
+## Status visualization (required)
+
+Use these **status chip colors** everywhere (job status, part status, approval status):
+
+| Status type   | Color   | Use for                          |
+|---------------|---------|-----------------------------------|
+| **Completed** | Green   | Done, approved, received, closed  |
+| **Pending**   | Orange  | Awaiting action, estimate/insurance/billing pending |
+| **On Hold**   | Red     | On hold, rejected, blocked       |
+| **In Progress** | Blue   | In repair, in progress, ordered  |
+
+Use `StatusChip` or equivalent from `ServiceCenterComponents` so colors stay consistent.
+
+## Core UI patterns
+
+### 1. Job List Screen
+
+- **Job cards** must show: vehicle number, customer name, **job status badge**, **current repair stage**, **last update timestamp**.
+- **Search bar** – Full-width, rounded; search by vehicle number, job card, customer.
+- **Filter chips** – Status filters (e.g. All, Pending, In Progress, Completed); horizontal scroll if needed.
+- **Branch filter** – Dropdown or chip to filter by branch (when user has multi-branch).
+- **Pull to refresh** – Refresh job list from API/local source.
+
+### 2. Job Detail Screen (modular section cards)
+
+Use **section cards** with soft elevation and a clear header. Each section is a **card** (Overview, Documents, Insurance, Repair Progress, Parts, Billing, Gate Pass). Only show sections the **current role** can access (role-based visibility).
+
+- **Overview card** – Vehicle details, customer details, job status.
+- **Documents card** – List of required/uploaded documents; upload button.
+- **Insurance card** – Survey details, approval status, notes.
+- **Repair Progress card** – Stage timeline (vertical), progress photos.
+- **Parts Tracking card** – Parts required list with status badges.
+- **Billing card** – Insurance liability, customer payment, payment proof.
+- **Gate Pass card** – Generate gate pass, delivery confirmation.
+
+If a role cannot access a module (e.g. Billing), **do not show** that card at all; keep layout consistent (no empty placeholders for hidden modules).
+
+### 3. Role-based visibility
+
+- **StaffRole** (Gate Entry, Estimator, Insurance, Workshop, Parts, Billing, Manager, Admin) determines which Job Detail sections are visible.
+- Map roles to sections (e.g. Billing role → Billing card; Workshop → Repair Progress; Insurance → Insurance card). Manager/Admin see all.
+- Gracefully hide or omit unavailable modules; do not show disabled/greyed-out cards for “no access”.
+
+### 4. Timeline view
+
+- Repair stages must be shown as a **vertical timeline** with:
+  - Icon or indicator per stage (e.g. circle with check for completed, dot for current).
+  - Timestamp (or “In progress” / “Pending”) per stage.
+- Use consistent spacing and connector lines between stages.
+
+### 5. Photo upload UI
+
+- **Progress photos**: display as **image grid** (e.g. 2–3 columns).
+- **Camera/upload button** – Clearly visible (e.g. dashed border card with camera icon).
+- **Preview modal** – Tap photo to open full-screen or modal preview; close button.
+
+### 6. Dashboard Screen
+
+- **Analytics cards** for:
+  - Vehicles in workshop
+  - Pending insurance approvals
+  - Parts pending
+  - Vehicles ready for delivery
+- Use **simple charts or progress indicators** (e.g. LinearProgressIndicator, or small bar/count).
+- Tapping a card can navigate to filtered Job List (e.g. “Pending insurance” → Jobs filtered by insurance pending).
+
+### 7. Navigation
+
+- **Bottom navigation** with exactly: **Dashboard**, **Jobs**, **Reports**, **Profile**.
+- Keep labels and icons consistent; minimum 48dp touch target for nav items.
+
+### 8. Accessibility
+
+- **Readable typography** – Use MaterialTheme typography; avoid very small body text.
+- **Sufficient contrast** – Prefer theme colors; status chips must have readable text on background.
+- **Large buttons** – Minimum height 48dp for primary/secondary actions.
+
+## Reference feel
+
+- Similar to: **Uber Driver**, **Notion mobile**, **Linear**, **Stripe Dashboard mobile**.
+- **Professional, production-ready**, suitable for staff using the app all day.
+
+## Implementation notes
+
+- Reuse `ServiceCenterComponents.kt` for: `StatusChip`, `SectionCard`, vertical timeline, photo grid + upload + preview modal.
+- Use `JobStatus`, `RepairStage`, `PartStatus`, `ApprovalStatus` from `JobModels.kt` when mapping to status colors.
+- Session/role from `DemoRepository.sessionFlow` (or equivalent) for role-based visibility in Job Detail.

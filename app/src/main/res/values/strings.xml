@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Ambica Auto App</string>
+
+    <!-- Splash -->
+    <string name="splash_tagline_bodyshop">Smart bodyshop workflow for Ambica Auto staff</string>
+
+    <!-- Jobs screen -->
+    <string name="jobs_title">Vehicle Job List</string>
+    <string name="jobs_search_hint">Search vehicle, job card, customer</string>
+    <string name="jobs_filter_all">All</string>
+    <string name="jobs_filter_pending">Pending</string>
+    <string name="jobs_filter_in_progress">In Progress</string>
+    <string name="jobs_filter_completed">Completed</string>
+    <string name="jobs_active_header">ACTIVE JOBS (%1$d)</string>
+    <string name="jobs_no_results">No jobs found</string>
+</resources>

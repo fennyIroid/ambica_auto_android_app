@@ -1,0 +1,115 @@
+---
+description: 
+globs: *.kt
+alwaysApply: false
+---
+---
+description: Enforces specific UI-related guidelines for Jetpack Compose within the presentation layer.
+globs: app/src/main/java/com/package/presentation/**/*.kt
+---
+
+ # Android UI Guidelines
+
+## Design System
+
+### Material Design
+- Follow Material Design 3 principles
+- Use Material theme components
+- Implement consistent typography
+- Follow color system guidelines
+- Use proper elevation and shadows
+- Use compose preview
+
+### Layout Structure
+- Use ConstraintLayout for complex layouts
+- Implement responsive design patterns
+- Follow proper view hierarchy
+- Avoid deep nesting
+- Use proper margins and padding
+
+## Components
+
+### Navigation
+- Implement Navigation Component
+- Use proper navigation patterns
+- Handle deep links appropriately
+- Implement proper up/back navigation
+- Use bottom navigation when appropriate
+
+### Lists and Grids
+- Use RecyclerView with proper adapters
+- Implement efficient item layouts
+- Handle item clicks properly
+- Use appropriate layout managers
+- Implement proper item decorations
+
+### Forms
+- Follow material form guidelines
+- Implement proper input validation
+- Show appropriate error states
+- Use proper input types
+- Handle keyboard interactions
+
+## User Experience
+
+### Loading States
+- Show appropriate loading indicators
+- Implement skeleton loading
+- Handle empty states
+- Show error states properly
+- Implement pull-to-refresh when appropriate
+
+### Animations
+- Use Material motion system
+- Implement smooth transitions
+- Follow animation duration guidelines
+- Use proper interpolators
+- Handle animation edge cases
+
+### Accessibility
+- Support different text sizes
+- Implement content descriptions
+- Support screen readers
+- Handle different screen orientations
+- Support dark mode
+
+## State Management
+
+### UI State
+- Use sealed classes for UI states
+- Handle configuration changes
+- Implement proper state restoration
+- Use SavedStateHandle when needed
+- Handle process death
+
+### Error Handling
+- Show user-friendly error messages
+- Implement proper retry mechanisms
+- Handle offline states
+- Show appropriate error UI
+- Provide recovery actions
+
+## Testing
+
+### UI Testing
+- Write UI tests for critical flows
+- Test different screen sizes
+- Test different orientations
+- Test accessibility features
+- Test dark mode
+
+## Responsive Design
+
+### Screen Sizes
+- Support different screen sizes
+- Use appropriate layouts for tablets
+- Handle multi-window mode
+- Support landscape mode
+- Use proper constraints
+
+### Resources
+- Provide different layouts when needed
+- Use appropriate image resolutions
+- Handle different pixel densities
+- Use proper dimension resources
+- Implement proper resource qualifiers

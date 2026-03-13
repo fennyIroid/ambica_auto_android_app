@@ -1,0 +1,95 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Outlines performance optimization guidelines for Android Jetpack Compose applications.
+globs: app/src/main/java/com/package/**/*.kt
+---
+
+ # Android Kotlin Performance Guidelines
+
+## Memory Management
+
+### Object Creation
+- Minimize object allocation in performance-critical code
+- Use object pools for frequently created/destroyed objects
+- Avoid creating unnecessary temporary objects
+- Use data classes for efficient memory usage
+
+### Collections
+- Choose appropriate collection types based on use case
+- Use Array for fixed-size collections
+- Prefer List for read-only operations
+- Use ArrayList for dynamic collections
+- Consider using Sequence for large collection operations
+
+### Resource Management
+- Properly close resources using `use` blocks
+- Implement proper cleanup in lifecycle methods
+- Release heavy resources in onDestroy()
+- Clear references in onCleared() for ViewModels
+
+## UI Performance
+
+### Layout Optimization
+- Minimize layout nesting depth
+- Use ConstraintLayout for complex layouts
+- Avoid overdraw
+- Use ViewStub for conditional layouts
+- Implement view recycling where appropriate
+
+### Threading
+- Keep main thread free from heavy operations
+- Use Coroutines for asynchronous operations
+- Implement proper threading patterns
+  - IO operations on IO dispatcher
+  - CPU-intensive work on Default dispatcher
+  - UI updates on Main dispatcher
+- Use viewModelScope for ViewModel coroutines
+- Use lifecycleScope for lifecycle-aware coroutines
+
+## Data Management
+
+### Database Operations
+- Execute database operations off the main thread
+- Use Room's suspend functions
+- Implement proper indexing
+- Use transactions for multiple operations
+- Cache frequently accessed data
+
+### Network Operations
+- Implement efficient caching strategies
+- Use proper timeout values
+- Handle network changes gracefully
+- Compress data when appropriate
+- Use efficient data formats (Protocol Buffers, JSON)
+
+## Image Handling
+- Load images efficiently using Glide or Coil
+- Implement proper image caching
+- Use appropriate image resolutions
+- Compress images when needed
+- Handle bitmap memory efficiently
+
+## Background Processing
+- Use WorkManager for deferrable background work
+- Implement proper background task scheduling
+- Handle process death gracefully
+- Use appropriate task priorities
+- Batch network requests when possible
+
+## Memory Leaks
+- Avoid static references to Activities/Fragments
+- Clean up event listeners
+- Use WeakReferences when appropriate
+- Implement proper ViewModel cleanup
+- Monitor memory usage with LeakCanary
+
+## Build Optimization
+- Enable R8/ProGuard optimization
+- Remove unused resources
+- Implement proper code shrinking
+- Use appropriate build variants
+- Optimize dependency usage

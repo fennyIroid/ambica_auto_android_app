@@ -1,0 +1,79 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Applies general best practices for Android Jetpack Compose development within the main application code.
+globs: app/src/main/java/com/package/**/*.kt
+---
+
+ # Android Kotlin General Best Practices
+
+## Code Style and Organization
+
+### Language Usage
+- Write all code and documentation in English
+- Declare explicit types for variables and functions
+- Avoid using `Any` type
+- Create proper custom types when needed
+- Maintain consistent code formatting
+
+### Naming Conventions
+- Use PascalCase for classes and interfaces
+- Use camelCase for variables, functions, and methods
+- Use SCREAMING_SNAKE_CASE for constants
+- Use underscores_case for file and directory names
+- Prefix boolean variables with verbs (is, has, can)
+- Use complete words instead of abbreviations
+  - Exception: Common abbreviations (API, URL, etc.)
+  - Exception: Loop variables (i, j) and common shortcuts (ctx, req, res)
+
+### Function Design
+- Keep functions short and focused (< 20 lines)
+- Name functions with verb + noun pattern
+- Use early returns to reduce nesting
+- Implement higher-order functions when appropriate
+- Use default parameter values instead of null checks
+- Follow RO-RO (Receive Object, Return Object) principle
+- Maintain single level of abstraction
+
+### Class Design
+- Follow SOLID principles
+- Prefer composition over inheritance
+- Keep classes small and focused (< 200 lines)
+- Limit public methods (< 10)
+- Limit properties (< 10)
+- Use data classes for data objects
+- Implement interfaces for contracts
+
+### Architecture
+- Use MVVM with Clean Architecture
+- Implement Repository pattern for data management
+- Use Dagger Hilt for dependency injection
+- Follow MVI pattern for state management
+- Organize code into logical modules
+
+### Error Handling
+- Use exceptions for unexpected errors
+- Implement proper error recovery mechanisms
+- Add context when catching exceptions
+- Use global error handlers where appropriate
+
+### Documentation
+- Document public APIs
+- Include KDoc comments for complex functions
+- Explain non-obvious implementation details
+- Keep documentation up-to-date
+
+### Version Control
+- Write meaningful commit messages
+- Keep commits focused and atomic
+- Follow branch naming conventions
+- Review code before merging
+
+### Dependencies
+- Keep dependencies up to date
+- Avoid unnecessary dependencies
+- Use stable versions in production
+- Document dependency purposes

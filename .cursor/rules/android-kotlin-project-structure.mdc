@@ -1,0 +1,291 @@
+---
+description: Android Project Structure 
+globs: app/**/*
+alwaysApply: true
+---
+
+## Root Project Structure
+
+project-root/
+├── .github/ # GitHub specific files
+│ └── workflows/ # CI/CD workflow configurations
+│
+├── app/ # Main application module
+│ ├── build.gradle.kts # App level build configuration
+│ ├── proguard-rules.pro # ProGuard rules
+│ └── src/ # Source code
+│
+├── buildSrc/ # Gradle dependencies & versions management
+│ └── src/main/kotlin/
+│ ├── Dependencies.kt # All dependencies
+│ └── Versions.kt # Dependency versions
+│
+├── gradle/ # Gradle wrapper files
+├── .gitignore # Git ignore rules
+├── build.gradle.kts # Project level build file
+├── gradle.properties # Gradle configuration
+├── gradlew # Gradle wrapper script (Unix)
+├── gradlew.bat # Gradle wrapper script (Windows)
+└── settings.gradle.kts # Gradle settings
+
+## Application Module Structure
+
+app/src/
+├── main/
+│ ├── java/com/company/package/ # Replace with your package name
+│ │ ├── App.kt # Application class
+│ │ ├── data/ # Data layer
+│ │ ├── di/ # Dependency injection
+│ │ ├── domain/ # Domain layer
+│ │ ├── model/ # Models
+│ │ ├── navigation/ # Navigation
+│ │ ├── ui/ # UI layer
+│ │ ├── util/ # Utilities
+│ │ └── ux/ # User experience
+│ │
+│ ├── res/ # Resources
+│ │ ├── anim/ # Animations
+│ │ ├── color/ # Color definitions
+│ │ ├── drawable/ # Images and vectors
+│ │ ├── font/ # Custom fonts
+│ │ ├── layout/ # XML layouts (if any)
+│ │ ├── mipmap/ # Launcher icons
+│ │ ├── navigation/ # Navigation graphs
+│ │ ├── raw/ # Raw resources
+│ │ ├── values/ # Resource values
+│ │ │ ├── colors.xml # Color values
+│ │ │ ├── dimens.xml # Dimension values
+│ │ │ ├── strings.xml # String values
+│ │ │ ├── styles.xml # Styles
+│ │ │ └── themes.xml # Themes
+│ │ └── xml/ # Other XML files
+│ │
+│ └── AndroidManifest.xml # App manifest
+│
+├── test/ # Unit tests
+└── androidTest/ # Instrumentation tests
+
+## Detailed Package Structure
+
+### 1. Data Layer (`data/`)
+
+data/
+├── api/ # Network API interfaces
+│ ├── service/ # Retrofit service interfaces
+│ ├── model/ # API data models (DTOs)
+│ └── interceptor/ # Network interceptors
+│
+├── database/ # Local database
+│ ├── dao/ # Data Access Objects
+│ ├── entity/ # Database entities
+│ └── AppDatabase.kt # Database configuration
+│
+├── repository/ # Repository implementations
+│ └── impl/ # Repository implementations
+│
+├── datastore/ # DataStore preferences
+├── mapper/ # Data mappers/converters
+└── source/ # Data sources
+├── local/ # Local data sources
+└── remote/ # Remote data sources
+
+data/
+├── api/ # Network API interfaces
+│ ├── service/ # Retrofit service interfaces
+│ ├── model/ # API data models (DTOs)
+│ └── interceptor/ # Network interceptors
+│
+├── database/ # Local database
+│ ├── dao/ # Data Access Objects
+│ ├── entity/ # Database entities
+│ └── AppDatabase.kt # Database configuration
+│
+├── repository/ # Repository implementations
+│ └── impl/ # Repository implementations
+│
+├── datastore/ # DataStore preferences
+├── mapper/ # Data mappers/converters
+└── source/ # Data sources
+├── local/ # Local data sources
+└── remote/ # Remote data sources
+
+### 2. Domain Layer (`domain/`)
+
+domain/
+├── model/ # Domain models
+├── repository/ # Repository interfaces
+├── usecase/ # Use cases
+│ ├── auth/ # Authentication use cases
+│ ├── user/ # User-related use cases
+│ └── content/ # Content-related use cases
+└── validation/ # Domain validation rules
+
+### 3. UI Layer (`ui/`)
+
+ui/
+├── compose/ # Compose UI components
+│ ├── common/ # Reusable components
+│ │ ├── buttons/
+│ │ ├── textFields/
+│ │ ├── dialogs/
+│ │ ├── loading/
+│ │ └── cards/
+│ │
+│ └── screens/ # Screen-specific components
+│
+├── theme/ # App theming
+│ ├── Color.kt # Color definitions
+│ ├── Type.kt # Typography
+│ ├── Shape.kt # Shapes
+│ └── Theme.kt # Theme configuration
+│
+└── state/ # UI state holders
+
+### 4. UX Layer (`ux/`)
+
+ux/
+├── main/ # Main app experience
+│ ├── MainActivity.kt
+│ ├── MainScreen.kt
+│ └── MainViewModel.kt
+│
+├── auth/ # Authentication flows
+│ ├── login/
+│ ├── register/
+│ └── forgot/
+│
+├── home/ # Home section
+├── profile/ # Profile section
+└── features/ # Other feature sections
+
+### 6. Dependency Injection (`di/`)
+
+di/
+├── module/ # DI modules
+│ ├── AppModule.kt # Application-level dependencies
+│ ├── NetworkModule.kt # Network-related dependencies
+│ ├── DatabaseModule.kt # Database-related dependencies
+│ └── ViewModelModule.kt # ViewModel dependencies
+└── qualifier/ # DI qualifiers
+
+## Essential Files Checklist
+
+### Root Level
+- [ ] `.gitignore`
+- [ ] `build.gradle.kts`
+- [ ] `settings.gradle.kts`
+- [ ] `gradle.properties`
+
+### App Level
+- [ ] `build.gradle.kts`
+- [ ] `proguard-rules.pro`
+- [ ] `AndroidManifest.xml`
+
+### Application Setup
+- [ ] `App.kt` - Application class
+- [ ] `MainActivity.kt` - Main activity
+- [ ] `MainScreen.kt` - Main compose screen
+- [ ] `MainViewModel.kt` - Main view model
+
+### Theme
+- [ ] `Theme.kt`
+- [ ] `Color.kt`
+- [ ] `Type.kt`
+- [ ] `Shape.kt`
+
+### Navigation
+- [ ] `NavGraph.kt`
+- [ ] `Screen.kt`
+
+### DI Setup
+- [ ] `AppModule.kt`
+- [ ] `NetworkModule.kt`
+- [ ] `DatabaseModule.kt`
+
+### Common UI Components
+- [ ] `AppButton.kt`
+- [ ] `AppTextField.kt`
+- [ ] `AppDialog.kt`
+- [ ] `AppTopBar.kt`
+- [ ] `LoadingIndicator.kt`
+
+### Base Classes/Interfaces
+- [ ] `BaseViewModel.kt`
+- [ ] `BaseRepository.kt`
+- [ ] `BaseUseCase.kt`
+- [ ] `Result.kt` (API result wrapper)
+
+### Utils
+- [ ] `Constants.kt`
+- [ ] `Extensions.kt`
+- [ ] `PreferenceUtil.kt`
+- [ ] `DateUtil.kt`
+- [ ] `ValidationUtil.kt`
+
+## Best Practices
+
+1. **Package Naming**
+   - Use meaningful and descriptive names
+   - Follow reverse domain naming convention
+   - Keep related files together
+
+2. **File Organization**
+   - Group related files in appropriate packages
+   - Maintain clear separation of concerns
+   - Keep file structure flat where possible
+
+3. **Resource Organization**
+   - Use proper resource naming conventions
+   - Organize drawables by size/type
+   - Maintain consistent string naming
+
+4. **Code Architecture**
+   - Follow Clean Architecture principles
+   - Implement MVVM pattern
+   - Use Use Cases for business logic
+   - Implement Repository pattern for data
+
+5. **Testing Structure**
+   - Mirror main source structure in test directories
+   - Separate unit and instrumentation tests
+   - Include test utilities and fake implementations
+
+## Dependencies Management
+
+Create a `buildSrc` directory with:
+
+```kotlin
+// Dependencies.kt
+object Deps {
+    object Compose {
+        const val ui = "androidx.compose.ui:ui:${Versions.compose}"
+        const val material = "androidx.compose.material:material:${Versions.compose}"
+        // ... other compose dependencies
+    }
+    
+    object AndroidX {
+        const val core = "androidx.core:core-ktx:${Versions.core}"
+        // ... other androidx dependencies
+    }
+    
+    // ... other dependency groups
+}
+
+// Versions.kt
+object Versions {
+    const val compose = "1.5.0"
+    const val core = "1.12.0"
+    // ... other versions
+}
+```
+
+This structure provides a solid foundation for:
+- Clean Architecture
+- MVVM Pattern
+- Dependency Injection
+- Jetpack Compose UI
+- Testing
+- Scalability
+- Maintainability
+
+Remember to adapt this structure based on your specific needs while maintaining clean architecture principles and separation of concerns.

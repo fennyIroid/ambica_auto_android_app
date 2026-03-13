@@ -1,0 +1,50 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Project Structure Guide
+
+This Android application follows Clean Architecture principles with MVVM pattern using Jetpack Compose. Below is the key structure and architectural components:
+
+## Core Application Structure
+
+The main application entry point is [GoLocalApp.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/GoLocalApp.kt), which initializes the app dependencies and configuration.
+
+### Key Architectural Components:
+
+1. **Navigation**
+   - [NavComposeRoute.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/navigation/NavComposeRoute.kt) - Navigation routes
+   - [NavigationAction.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/navigation/NavigationAction.kt) - Navigation actions
+
+2. **Dependency Injection**
+   - [AppModule.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/di/AppModule.kt) - Main app dependencies
+   - [NetworkModule.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/di/NetworkModule.kt) - Network related dependencies
+
+3. **Base Components**
+   - [BaseActivity.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/model/base/BaseActivity.kt) - Base activity class
+   - [BaseViewModel.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/model/base/BaseViewModel.kt) - Base ViewModel class
+
+## Layer Organization
+
+### 1. Data Layer
+- Location: `app/src/main/java/com/golocal/user/mobile/app/data/`
+- Contains repositories, data sources, and mappers
+- Remote data handling in `remote/` directory
+- Local data handling in `local/` directory
+
+### 2. Domain Layer
+- Location: `app/src/main/java/com/golocal/user/mobile/app/domain/`
+- Contains business logic and use cases
+- Validation logic in `validation/` directory
+
+### 3. UI Layer
+- Location: `app/src/main/java/com/golocal/user/mobile/app/ui/`
+- Contains Compose UI components and themes
+- Common components in `compose/common/`
+- Theme configuration in `theme/`
+
+### 4. UX Layer
+- Location: `app/src/main/java/com/golocal/user/mobile/app/ux/`
+- Contains screens, view models, and UI state
+- Organized by features (container/, main/, startup/)

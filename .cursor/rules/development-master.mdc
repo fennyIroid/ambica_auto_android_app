@@ -1,0 +1,89 @@
+---
+description: Master rule for Amibica Auto — folder structure, API flow, and 5-file structure. Apply for every new API and screen. Aligns with Wildflower app patterns.
+globs: app/src/main/java/com/ambica/auto/app/**/*
+alwaysApply: true
+---
+
+# Amibica Auto — Development Master Rule
+
+Follow this rule for **all** new API integrations and screen generation. The same patterns apply as in the Wildflower app; use **Amibica** package and folder structure below.
+
+## Package and folder structure
+
+- **Base package**: `com.ambica.auto.app`
+- **Data layer**: `data/source/remote/` (EndPoints, ApiServices, ApiRepository, ApiRepositoryImpl), `data/source/local/` (demo, datastore)
+- **Models**: `model/domain/request/`, `model/domain/response/`, `model/domain/` (domain types)
+- **UX / screens**: `ux/` — `ux/startup/`, `ux/main/`, `ux/container/` (e.g. job hub, job modules)
+- **UI**: `ui/theme/`, `ui/compose/common/`
+- **DI**: `di/` (AppModule, NetworkModule)
+- **Navigation**: `navigation/` (graph, routes)
+
+When adding a **new feature that calls an API**, use the **5-file structure** (five groups of files) below. Do not skip any group.
+
+---
+
+## 5-file structure (every new API-backed feature)
+
+For each new API and its screen, create or update files in this order:
+
+### 1. Endpoint
+
+- **File**: `app/.../data/source/remote/EndPoints.kt`
+- Add a constant under the right object, e.g. `object Jobs { const val LIST = "api/jobs" }`.
+
+### 2. Request and Response models
+
+- **Request**: `app/.../model/domain/request/<Name>Request.kt` — data class with API fields.
+- **Response**: `app/.../model/domain/response/<Name>Response.kt` — data class.
+- Use `ApiResponse<T>` for standard single-entity responses; use `BaseResponse<T>` when the API has `data`, `message`, `success`.
+
+### 3. ApiServices (Retrofit)
+
+- **File**: `app/.../data/source/remote/repository/ApiServices.kt`
+- Add a suspend function returning `Response<ApiResponse<T>>` or `Response<BaseResponse<T>>`.
+- Use `@Body`, `@Query`, `@Path` as needed.
+
+### 4. ApiRepository interface and implementation
+
+- **Interface**: `app/.../data/source/remote/repository/ApiRepository.kt`
+  - Add method returning `Flow<NetworkResult<ApiResponse<T>>>` or `Flow<NetworkResult<BaseResponse<T>>>`.
+- **Impl**: `app/.../data/source/remote/repository/ApiRepositoryImpl.kt`
+  - Implement with `flow { }`, emit `Loading` / `Success` / `Error` / `UnAuthenticated`, use `extractError()` on error body, chain `.onStart { emit(Loading) }.flowOn(Dispatchers.IO).catch { ... }`.
+
+### 5. UseCase, UiState, ViewModel, Screen (and Route)
+
+- **UseCase**: `app/.../ux/.../Get<Feature>UiStateUseCase.kt`
+  - `@Inject constructor(private val apiRepository: ApiRepository)`.
+  - Hold `MutableStateFlow<FeatureUiDataState>`; `invoke(context, coroutineScope, navigate)` returns `FeatureUiState(flow, event)`.
+  - In `handleEvent`, for submit: validate → `coroutineScope.launch { apiRepository.xxx().collect { ... } }` and update state / show toast / navigate.
+- **UiState**: `app/.../ux/.../<Feature>UiState.kt` — `FeatureUiState(StateFlow<FeatureUiDataState>, (FeatureUiEvent) -> Unit)`, `FeatureUiDataState`, `FeatureUiEvent` (sealed).
+- **ViewModel**: `app/.../ux/.../<Feature>ViewModel.kt` — `@HiltViewModel`, inject UseCase and Context, `val uiState = getFeatureUiStateUseCase(context, viewModelScope) { navigate(it) }`.
+- **Screen**: Composable that uses `hiltViewModel()`, collects `uiState.featureUiStateFlow`, calls `uiState.event(...)` for user actions, uses `HandleNavigation` when ViewModel is ViewModelNav.
+- **Route**: Add route object and register in the navigation graph.
+
+---
+
+## Flow summary (API → screen)
+
+**Endpoint → Request/Response → ApiServices → ApiRepository (+ Impl) → GetXxxUiStateUseCase (+ UiState/Event) → ViewModel → Screen (+ Route).**
+
+---
+
+## Other rules to follow
+
+- **API integration detail**: Follow [api-integration-structure.mdc](api-integration-structure.mdc) for exact code patterns (NetworkResult, extractError, UseCase event handling, DI).
+- **Project layout**: Follow [android-kotlin-project-structure.mdc](android-kotlin-project-structure.mdc) for data/domain/ui/ux/navigation layout.
+- **UI for vehicle service**: Follow [vehicle-service-ui-design.mdc](vehicle-service-ui-design.mdc) for all Compose screens (status chips, section cards, role-based visibility, timeline, photo grid, dashboard, bottom nav, accessibility).
+- **General**: Follow [general-best-practice.mdc](general-best-practice.mdc) and [performance-guidelines.mdc](performance-guidelines.mdc).
+
+---
+
+## Checklist for a new API-backed screen
+
+- [ ] 1. EndPoints.kt — new constant
+- [ ] 2. Request.kt + Response.kt in `model/domain/request/` and `model/domain/response/`
+- [ ] 3. ApiServices.kt — new suspend function
+- [ ] 4. ApiRepository.kt — new method; ApiRepositoryImpl.kt — implementation with Flow and NetworkResult
+- [ ] 5. GetXxxUiStateUseCase.kt + XxxUiState.kt + XxxViewModel.kt + XxxScreen.kt + Route and graph registration
+
+Always follow this 5-file structure and folder structure throughout Amibica Auto development.

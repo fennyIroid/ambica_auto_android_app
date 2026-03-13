@@ -1,0 +1,129 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Defines testing guidelines for Android Jetpack Compose components, ViewModels, and UseCases.
+globs: app/src/test/java/com/package/**/*.kt
+---
+ # Android Testing Guidelines
+
+## Test Structure
+
+### Test Organization
+- Follow AAA pattern (Arrange-Act-Assert)
+- Use clear test naming conventions
+- Group related tests together
+- Keep tests independent
+- One assertion per test
+
+### Naming Conventions
+- Use descriptive test names
+- Follow pattern: whenX_thenY
+- Use clear variable names
+  - inputX for input values
+  - expectedX for expected results
+  - actualX for actual results
+  - mockX for mocked dependencies
+
+## Unit Testing
+
+### ViewModel Testing
+- Test all public methods
+- Verify state changes
+- Test error scenarios
+- Use TestCoroutineDispatcher
+- Verify LiveData/Flow emissions
+
+### Repository Testing
+- Mock data sources
+- Test caching logic
+- Verify error handling
+- Test network scenarios
+- Verify data transformations
+
+### Use Case Testing
+- Test business logic
+- Verify input validation
+- Test error scenarios
+- Mock dependencies
+- Test edge cases
+
+## Integration Testing
+
+### Database Testing
+- Use in-memory database
+- Test migrations
+- Verify CRUD operations
+- Test relationships
+- Test queries performance
+
+### API Testing
+- Mock network responses
+- Test error scenarios
+- Verify request/response mapping
+- Test timeout scenarios
+- Verify retry logic
+
+## UI Testing
+
+### Component Testing
+- Test individual UI components
+- Verify user interactions
+- Test different states
+- Verify accessibility
+- Test animations
+
+### End-to-End Testing
+- Test critical user flows
+- Verify navigation
+- Test error scenarios
+- Verify data persistence
+- Test offline functionality
+
+## Test Tools
+
+### Framework
+- Use JUnit for unit tests
+- Use Espresso for UI tests
+- Use MockK for mocking
+- Use Truth for assertions
+- Use Robolectric when needed
+
+### Coroutines Testing
+- Use TestCoroutineDispatcher
+- Test flow collections
+- Verify coroutine scopes
+- Test cancellation
+- Handle exceptions
+
+## Best Practices
+
+### Test Coverage
+- Aim for high test coverage
+- Focus on critical paths
+- Test edge cases
+- Test error scenarios
+- Document untested scenarios
+
+### Test Maintenance
+- Keep tests simple
+- Avoid test duplication
+- Use test utilities
+- Update tests with code changes
+- Document test requirements
+
+### Performance
+- Keep tests fast
+- Avoid unnecessary setup
+- Use appropriate test scopes
+- Mock heavy dependencies
+- Use test fixtures efficiently
+
+### Continuous Integration
+- Run tests on each commit
+- Maintain test stability
+- Monitor test coverage
+- Fix failing tests promptly
+- Document flaky tests

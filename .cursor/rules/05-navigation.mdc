@@ -1,0 +1,63 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Navigation Guide
+
+## Navigation Structure
+
+The app uses Jetpack Navigation Compose with the following structure:
+
+1. **Routes**
+   - Defined in [NavComposeRoute.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/navigation/NavComposeRoute.kt)
+   - Follow consistent naming pattern
+   - Include required arguments in route definition
+
+2. **Navigation Graphs**
+   - Main graph: [AppMainGraph.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/navigation/graph/AppMainGraph.kt)
+   - Startup graph: [AppStartupGraph.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/navigation/graph/AppStartupGraph.kt)
+   - Container graph: [AppContainerGraph.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/navigation/graph/AppContainerGraph.kt)
+
+3. **Navigation Actions**
+   - Defined in [NavigationAction.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/navigation/NavigationAction.kt)
+   - Use type-safe builders
+   - Handle deep links properly
+
+## Screen Setup
+
+Each screen should have:
+
+1. **Route Component**
+   Example: [SellerProfileRoute.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/ux/container/sellerProfile/SellerProfileRoute.kt)
+   - Handles navigation setup
+   - Manages arguments
+   - Sets up ViewModel
+
+2. **Screen Component**
+   Example: [SellerProfileScreen.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/ux/container/sellerProfile/SellerProfileScreen.kt)
+   - Contains UI implementation
+   - Handles user interactions
+   - Manages state display
+
+## Best Practices
+
+1. **Route Naming**
+   - Use consistent naming patterns
+   - Include feature prefix
+   - Document required arguments
+
+2. **Navigation State**
+   - Handle back press properly
+   - Save navigation state
+   - Handle process death
+
+3. **Deep Linking**
+   - Implement proper deep link handling
+   - Validate deep link parameters
+   - Handle missing arguments
+
+4. **Testing**
+   - Test navigation flows
+   - Verify argument passing
+   - Test deep links

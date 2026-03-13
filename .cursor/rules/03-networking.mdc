@@ -1,0 +1,57 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Networking and API Integration Guide
+
+## API Structure
+
+The API integration is structured in the following way:
+
+1. **Endpoints**
+   - Defined in [EndPoints.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/data/source/remote/EndPoints.kt)
+   - Follow REST API conventions
+   - Use proper HTTP methods
+
+2. **Network Configuration**
+   - Network setup in [NetworkModule.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/di/NetworkModule.kt)
+   - Interceptors in `data/source/remote/interceptor/`
+   - Proper error handling and retry logic
+
+3. **Repository Pattern**
+   - Repositories in `data/source/remote/repository/`
+   - Each repository should focus on a specific feature
+   - Implement proper caching strategies
+
+## Data Models
+
+1. **Request Models**
+   - Located in `model/domain/request/`
+   - Example: [SendOTPReq.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/model/domain/request/SendOTPReq.kt)
+
+2. **Response Models**
+   - Located in `model/domain/response/`
+   - Example: [ApiResponse.kt](mdc:app/src/main/java/com/golocal/user/mobile/app/model/domain/response/ApiResponse.kt)
+
+## Best Practices
+
+1. **Error Handling**
+   - Use proper error states
+   - Implement retry mechanisms
+   - Handle network connectivity issues
+
+2. **Performance**
+   - Implement proper caching
+   - Use pagination where needed
+   - Handle large data sets efficiently
+
+3. **Security**
+   - Use HTTPS
+   - Implement proper authentication
+   - Handle sensitive data securely
+
+4. **Testing**
+   - Write unit tests for repositories
+   - Mock network calls in tests
+   - Test error scenarios

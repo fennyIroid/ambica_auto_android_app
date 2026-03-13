@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="80dp"
+    android:viewportWidth="200"
+    android:viewportHeight="60">
+    
+    <!-- Car profile top curve -->
+    <path
+        android:strokeColor="#FF7518"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M10,45 C20,40 35,20 100,20 C165,20 180,40 190,45" />
+        
+    <!-- Car profile bottom with wheel cutouts -->
+    <path
+        android:strokeColor="#FF7518"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M10,45 L40,45 A10,10 0 0,1 60,45 L140,45 A10,10 0 0,1 160,45 L190,45" />
+
+    <!-- Details/Lines -->
+    <path
+        android:strokeColor="#FF7518"
+        android:strokeWidth="0.8"
+        android:strokeLineCap="round"
+        android:pathData="M65,22 L75,45 M135,22 L125,45" />
+        
+</vector>

@@ -1,0 +1,78 @@
+---
+description: Execution structure for all API integrations (follow signup flow)
+alwaysApply: true
+---
+
+# API Integration Structure
+
+Use this exact flow for every new API. Reference: signup/register.
+
+## 1. Endpoint
+
+- **File**: `app/.../data/source/remote/EndPoints.kt`
+- Add constant under the right object, e.g. `object Signup { const val REGISTER = "api/auth/register" }`.
+
+## 2. Request / Response models
+
+- **Request**: `app/.../model/domain/request/<Name>Request.kt` — data class with API fields.
+- **Response**: `app/.../model/domain/response/<Name>Response.kt` — data class.
+- Use `ApiResponse<T>` for normal single-entity responses (has `data`, `message`, `status`, `apiErrors`).
+- Use `BaseResponse<T>` for simpler APIs (has `data`, `message`, `success`).
+
+## 3. ApiServices (Retrofit)
+
+- **File**: `app/.../data/source/remote/repository/ApiServices.kt`
+- Declare suspend function returning `Response<ApiResponse<T>>` or `Response<BaseResponse<T>>`.
+- Use `@Body`, `@Query`, `@Path` as needed. Example:
+  - `suspend fun register(@Body req: RegisterRequest): Response<ApiResponse<AuthUserResponse>>`
+
+## 4. ApiRepository interface + impl
+
+- **Interface**: `app/.../data/source/remote/repository/ApiRepository.kt`
+  - Method returns `Flow<NetworkResult<ApiResponse<T>>>` or `Flow<NetworkResult<BaseResponse<T>>>`.
+- **Impl**: `app/.../data/source/remote/repository/ApiRepositoryImpl.kt`
+  - Implement with `flow { }`:
+    - `try { response = apiServices.xxx(...); if (response.isSuccessful && response.body() != null) emit(NetworkResult.Success(response.body())) else emit(NetworkResult.Error(response.errorBody().extractError())) }`
+    - `catch (e: IOException) { emit(NetworkResult.Error(e.message)) }`
+    - `catch (e: HttpException) { if (e.code() == 401) emit(NetworkResult.UnAuthenticated(e.message)) else emit(NetworkResult.Error(e.message)) }`
+  - Chain: `.onStart { emit(NetworkResult.Loading()) }.flowOn(Dispatchers.IO).catch { emit(NetworkResult.Error(it.message)) }`
+  - Use `response.errorBody().extractError()` for error message (from `utils.ext.Extensions`).
+
+## 5. UseCase (UI state + API call)
+
+- **File**: `app/.../ux/.../Get<Feature>UiStateUseCase.kt`
+- `@Inject constructor(private val apiRepository: ApiRepository)`.
+- Hold `MutableStateFlow<FeatureUiDataState>` for screen state.
+- `operator fun invoke(context: Context, coroutineScope: CoroutineScope, navigate: (NavigationAction) -> Unit): FeatureUiState`:
+  - Return `FeatureUiState(featureUiStateFlow = _flow, event = { handleEvent(context, it, coroutineScope, navigate) })`.
+- In `handleEvent`, for the "submit" event: validate, then `coroutineScope.launch { apiRepository.xxx(...).collect { result -> when (result) { is NetworkResult.Loading -> update { it.copy(isLoading = true) }; is NetworkResult.Success -> update { it.copy(isLoading = false) }; showSuccessMessage(...); is NetworkResult.Error -> update { it.copy(isLoading = false) }; showErrorMessage(...); is NetworkResult.UnAuthenticated -> ... } } }`.
+- Access payload via `result.data?.data` for `ApiResponse` or `result.data?.data` for `BaseResponse`.
+
+## 6. UiState / UiDataState / UiEvent
+
+- **File**: `app/.../ux/.../<Feature>UiState.kt` (or same package as UseCase)
+- `FeatureUiState(signupUiStateFlow: StateFlow<FeatureUiDataState>, event: (FeatureUiEvent) -> Unit)`.
+- `FeatureUiDataState`: form fields, `isLoading`, field errors.
+- `FeatureUiEvent`: sealed interface (e.g. `OnEmailChange`, `OnSubmitClick`).
+
+## 7. ViewModel
+
+- **File**: `app/.../ux/.../<Feature>ViewModel.kt`
+- `@HiltViewModel` class implementing `ViewModelNav by ViewModelNavImpl()`.
+- `@Inject constructor(@ApplicationContext context: Context, getFeatureUiStateUseCase: GetFeatureUiStateUseCase)`
+- `val uiState: FeatureUiState = getFeatureUiStateUseCase(context = context, coroutineScope = viewModelScope) { navigate(it) }`
+
+## 8. Screen (Composable)
+
+- `viewModel: FeatureViewModel = hiltViewModel()`, then `val uiState = viewModel.uiState`, `val state by uiState.featureUiStateFlow.collectAsState()`.
+- Use `uiState.event(FeatureUiEvent.OnXxx(...))` for user actions.
+- Use `HandleNavigation(viewModelNav = viewModel, navController = navController)` when ViewModel is ViewModelNav.
+
+## 9. DI
+
+- `ApiRepository` bound in `AppModule`: `ApiRepositoryImpl(apiServices)` as `ApiRepository`.
+- `ApiServices` from `NetworkModule` (Retrofit). UseCase and ViewModel are constructor-injected (no extra binding needed if interfaces aren't used for UseCase).
+
+## Summary flow
+
+**Endpoint → Request/Response models → ApiServices (suspend, Response<T>) → ApiRepository (Flow<NetworkResult<T>>) → RepositoryImpl (flow + Loading/Success/Error/UnAuthenticated + extractError + flowOn(IO)) → GetXxxUiStateUseCase (StateFlow + event + apiRepository.xxx().collect + toast/navigate) → UiState/DataState/Event → ViewModel (invoke UseCase with context, viewModelScope, navigate) → Screen (collect state, call event, HandleNavigation).**

@@ -48,3 +48,13 @@ branch_structure.json
 temp_auto_push.bat
 temp_interactive_push.bat
 .gitignore
+
+# ---- added by security cleanup: build & dependency output ----
+node_modules/
+
+# ---- added by security cleanup: local secrets, never commit ----
+google-services.json
+GoogleService-Info.plist
+.env
+.env.local
+!.env.example
